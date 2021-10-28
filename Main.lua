@@ -9,8 +9,10 @@ local image = require("Image")
 -- Переменные
 
 local EFI = component.eeprom
-local totalMemory = math.modf(computer.totalMemory() / 1024)
-local freeMemory = math.modf(computer.freeMemory() / 1024)
+local totalMemoryKB = math.modf(computer.totalMemory() / 1024)
+local freeMemoryKB = math.modf(computer.freeMemory() / 1024)
+local totalMemoryMB = math.modf(totalMemoryKB / 1024)
+local freeMemoryMB = math.modf(freeMemoryKB / 1024)
 local address = computer.address()
 local cache = fs.path(system.getCurrentScript())
 local lvlenergy = math.modf(computer.energy())
@@ -36,38 +38,21 @@ return layout:addChild(GUI.roundedButton(1, 1, 36, 3, 0xD2D2D2, 0x696969, 0x4B4B
 end
 
 local function addText(text)
-layo:addChild(GUI.text(1, 1, 0x696969, text))
+layout:addChild(GUI.text(1, 1, 0x696969, text))
 end
 
 -- Add nice gray text object to layout
 layout:addChild(GUI.image(1, 1, image.load(cache .. "/Icon.pic")))
 layout:addChild(GUI.text(2, 2, 0x4B4B4B, "Привет, ".. system.getUser()))
-layout:addChild(GUI.text(3, 3, 0x4B4B4B, totalMemory .." КБ оперативной памяти у Вас всего"))
-layout:addChild(GUI.text(4, 4, 0x4B4B4B, freeMemory .. " КБ оперативной памяти у Вас свободно"))
+layout:addChild(GUI.text(3, 3, 0x4B4B4B, totalMemoryKB .." КБ (".. totalMemoryMB .. " МБ) оперативной памяти у Вас всего"))
+layout:addChild(GUI.text(4, 4, 0x4B4B4B, freeMemoryKB .. " КБ (".. freeMemoryMB .. " МБ) оперативной памяти у Вас свободно"))
 layout:addChild(GUI.text(5, 5, 0x4B4B4B, lvlenergy .. " зафиксированная энергия на компьютере(".. maxenergy .." максимальная энергия)"))
 layout:addChild(GUI.text(6, 6, 0x4B4B4B, uptime .. " секунд работает компьютер"))
 layout:addChild(GUI.text(7, 7, 0x4B4B4B, efiname .. " - название EFI"))
 layout:addChild(GUI.text(8, 8, 0x4B4B4B, boot .. " - адрес диска, с которого запущена операционная система"))
-if component.isAvailable("robot") then
-layout:addChild(GUI.text(9, 9, 0x4B4B4B, "Это устройство является роботом"))
-else
-layout:addChild(GUI.text(9, 9, 0x4B4B4B, "Это устройство не является роботом"))
-end
 layout:addChild(GUI.text(10, 10, 0x4B4B4B, address .." - адрес устройства"))
 if computer.users() == "" then
 layout:addChild(GUI.text(11, 11, 0x4B4B4B, "Список пользователей устройства:".. computer.users()))
-end
-if component.isAvailable("robot") then
-local robot = require("robot")
-local rl = "N/A"
-if component.isAvailable("experience") then
-local rl = math.modf(component.experience.level())
-end
-local rn = robot.name()
-local ri = math.modf(robot.inventorySize())
-layout:addChild(GUI.text(12, 12, 0x4B4B4B, "Уровень у Вашего робота:" .. rl))
-layout:addChild(GUI.text(13, 13, 0x4B4B4B, "Имя Вашего робота:" .. rn))
-layout:addChild(GUI.text(14, 14, 0x4B4B4B, "Объём инвентаря Вашего робота:" .. ri))
 end
 local lable = layout:addChild(GUI.input(15, 15, 30, 3, 0xEEEEEE, 0x555555, 0x999999, 0xFFFFFF, 0x2D2D2D, "", "Введите новое название EFI"))
 addButton("Изменить название EFI").onTouch = function()
@@ -78,17 +63,11 @@ addButton("Изменить название EFI").onTouch = function()
     GUI.alert("Пустая строка.")
   end
 end
-layout:addChild(GUI.text(16, 16, 0x33DB40, "Функции будут добавляться"))
+layout:addChild(GUI.text(16, 16, 0x33DB40, "Версия 1.07 stable"))
 layout:addChild(GUI.text(17, 17, 0x0049FF, "Разработано на проекте Hilarious(hil.su)"))
 
-
-
--- Customize MineOS menu for this application by your will
---local contextMenu = menu:addContextMenuItem("File")
---end
-
 -- You can also add items without context menu
-menu:addItem("exit").onTouch = function()
+menu:addItem("Выйти").onTouch = function()
   window:remove()
 end
 
