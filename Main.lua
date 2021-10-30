@@ -72,7 +72,7 @@ local lable = layout:addChild(GUI.input(15, 15, 30, 3, 0xEEEEEE, 0x555555, 0x999
 addButton(lang.editefiname).onTouch = function()
   if #lable.text > 0 then
     EFI.setLabel(lable.text)
-    GUI.alert(lang.efiname)
+    GUI.alert(lang.newefiname)
   else
     GUI.alert(lang.emptystring)
   end
