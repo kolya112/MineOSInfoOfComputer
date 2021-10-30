@@ -12,9 +12,9 @@
     userslist = "Users list of device:",
     efinameinput = "Enter the new EFI name",
     editefiname = "Change EFI name",
-    efiname = "The new EFI name has been successfully installed!",
+    newefiname = "The new EFI name has been successfully installed!",
     emptystring = "Empty string.",
-    version = "Version 1.08",
+    version = "Version 1.09",
     dev = "Developed on Hilarious project(hil.su)",
     exit = "Выйти"
 }
